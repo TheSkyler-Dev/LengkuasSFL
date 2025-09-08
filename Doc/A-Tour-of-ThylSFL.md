@@ -67,7 +67,7 @@ Thyl includes a straightforward, basic set of arithmetic operators and functions
 | `rnd()`  | Rounds numbers to nth decimal position (adjustable)                        |
 
 ### Control Flow
-Thyl has your usual control flow structures: `while` loops, `do/while` loops and `for` loops. And both `if/else` and `switch` statements. These are used no differently from other programming languages:
+Thyl has your usual control flow structures: `while` loops, `do/while` loops and `for` loops. And both `if/else` and `switch` (declared with the `sw`keyword) statements. These are used no differently from other programming languages, but are delimited with `endwhile`, `endfor`, `endif` and `endsw`:
 **While loop**
 ```thyl
 while(i32 i = 0; i < len(MyArray); i+):
@@ -114,7 +114,7 @@ sw(<checking variable>):
 endsw
 ```
 ### Functions
-Functions in Thyl are a core component for writing modular, reusable code. A Thyl program must always have one main function, which is the standard entry point. The return type is specified after the function name with the arrow operator (`->`). Valid return types are: `i32`, `i64`, `none`. The return keyword in Thyl is `ret`.
+Functions in Thyl are a core component for writing modular, reusable code. A Thyl program must always have one main function, which is the standard entry point. The return type is specified after the function name with the arrow operator (`->`). Valid return types are: `i32`, `i64`, `none`. The return keyword in Thyl is `ret`. To declare a function, you use the `fun` keyword, and terminate it with 'endfun`.
 In Thyl, functions are declared as follows:
 ```thyl
 fun myFunc(<args>)->i32:
@@ -123,3 +123,4 @@ fun myFunc(<args>)->i32:
 endfun
 
 ```
+
