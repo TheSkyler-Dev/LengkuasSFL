@@ -114,11 +114,12 @@ sw(<checking variable>):
 endsw
 ```
 ### Functions
-Functions in Thyl are a core component for writing modular, reusable code. A Thyl program must always have one main function, which is the standard entry point. The return type is specified after the function name with the arrow operator (`->`). Valid return types are: `i32`, `i64`, `none` and `var`. The `var` return type lets you return values of any type besides `bool` stored in a variable. The return keyword in Thyl is `ret`.
+Functions in Thyl are a core component for writing modular, reusable code. A Thyl program must always have one main function, which is the standard entry point. The return type is specified after the function name with the arrow operator (`->`). Valid return types are: `i32`, `i64`, `none`. The return keyword in Thyl is `ret`.
 In Thyl, functions are declared as follows:
 ```thyl
 fun myFunc(<args>)->i32:
     ~some code here
     ret 0
 endfun
+
 ```
