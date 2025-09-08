@@ -100,4 +100,4 @@ Contributions to Fern's ANTLR grammar are welcome! This section outlines specifi
 
 ## License
 
-By contributing to Fern-lang, you agree that your contributions will be licensed under the [Apache 2.0 License](LICENSE).
+By contributing to Fern-lang, you agree that your contributions will be licensed under the [Apache 2.0 License](https://github.com/TheSkyler-Dev/ThylSFL/blob/main/LICENSE).
