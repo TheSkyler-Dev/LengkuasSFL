@@ -5,7 +5,7 @@ ThylSFL or simply Thyl (pronounced "Thil") is an open source, embedded domain sp
 Thyl aims to follow the following key characteristics:
 - Concise and easily readable
 - Prototyping and production in one single language
-- Can be interpreted pr cpmpiled
+- Can be interpreted or cpmpiled
 - Controlled Concurrency without surprises
 - Memory safety thanks to enforced reference counting
 - easy to grasp, easy to maintain structure
