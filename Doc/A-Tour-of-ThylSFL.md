@@ -5,20 +5,26 @@ Thyl is a creative abbreviation of the animal the language was named after, the 
 There are style recommendations for coding in Thyl, such as using four spaces for indentation, instead of tab. Semicolons may be omitted, but adding them anyway is acceptable. It is highly recommended to keep spaces between values or variables and operators. Function names should use `camelCase` or `Snake_Case`, variables can use `PascalCase`, `Kebab-Case` or ideally `lowercase`. Variables must be initialized upon declaration
 
 ### Data Types and Variables
-`Thyl` has one kind of data types: Primitives. Primitives are your usual data types:
+`Thyl` has two kinds of data types: Primitives and sensor stream. Primitives are your usual data types:
 
-| Primitives             |
-| ---------------------- |
-| String (`str`)         |
-| Boolean (`bool`)       |
-| Integer (`i32`, `i64`) |
-| Float (`f32`, `f64`)   |
+| Primitives             | Special Types           |
+| ---------------------- | ----------------------- |
+| String (`str`)         | Sensor Stream `sstream` |
+| Boolean (`bool`)       |                         |
+| Integer (`i32`, `i64`) |                         |
+| Float (`f32`, `f64`)   |                         |
+
 Variables have no special declaration keyword, while constants use the standard `const` keyword. Variable declaration should look something like this:
 ```thyl
 f64 MyVar = 9.81
 const f64 pi = 3.141593
 ```
-Variables in `Thyl` are always nullable. Since variables must be initialized upon declaration, you'd use the `nil` value for a variable with an initial null value, which prevents the variable from being used anywhere until it gets a non-null value. This cannot be done with constants.
+Variables in `Thyl` are always nullable. Since variables must be initialized upon declaration, you'd use the `nil` value for a variable with an initial null value, which prevents the variable from being used anywhere until it gets a non-null value. This cannot be done with constants. Sensor streams (`sstream`) are special variables that give a sensor address or data pins connected to a sensor a name that can be called more easily. These enable you to handle sensor data streams more gracefully by eliminating the need to specify the address or data pin of a sensor each time you want to pass its data stream to a function or array.
+Usage:
+```thyl
+sstream MySensor = <sensor address or connected data pin>
+```
+
 
 ### Basic I/O
 Basic I/O is essential to take any input and output text, especially for debugging. Thyl uses `msgIn()` for input and `msgOut()` for this. The text body (whatever is placed in the parentheses) of `msgOut()` automatically goes into a newline at the end. Template literals are also supported by placing a dollar sign (`$`) in front of a variable or function name. Expressions are inserted by wrapping them in curly braces preceded by a dollar sign. String literals (used as the output of `msgOut()`) must always be enclosed in double quotes `"`, single quotes are reserved for punctuation within string literals. Comments use the tilde (`~`) prefix, double tilde (`~~`) for multi-line comments.
@@ -36,7 +42,16 @@ Thyl only has one data structure as of now: Arrays. They can store a bunch of da
 ```thyl
 f64 arr MyArray = [0.5, 0.49, ...]
 ```
-It's important to note that hire dimensional arrays may be added in a later version of Thyl.
+It's important to note that higher dimensional arrays may be added in a later version of Thyl. 
+Arrays can be null initially, which would make them unusable until data is pushed to the array. The first push to an array initialized with `nil` always overwrites the `nil` position, which would always be at index 0, since arrays in Thyl are zero-based. New data is pushed to an array with `push()`, and deleted with `pop()`. Here's an example:
+```thyl
+sstream MySensor = 0x21
+f64 arr MyArr = [nil]
+MyArr.push(MySensor) ~pushing a sensor stream to myArr
+
+~deleting from an array
+MyArr.pop([<index>])
+```
 
 ### Basic Arithmetic and Logic Operators
 Thyl includes a straightforward, basic set of arithmetic operators and functions for commonly used arithmetic operations, as well as the basic logic operators.
@@ -123,4 +138,3 @@ fun myFunc(<args>)->i32:
 endfun
 
 ```
-
