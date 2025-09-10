@@ -12,10 +12,7 @@ LengkuasSFL aims to follow the following key characteristics:
 - FIFO (First-In, First-Out) for staggered data streams
 
 ## Who or what is `LengkuasSFL` for?
-LengkuasSFL is intended for sensor systems, embedded sensor fusion with TinyML and the engineers and developers working with these technologies. LengkuasSFL can, for example, be used to filter out sensor noise or limit the measurement scope of sensors. 
-=======
-## Who or what is `Thyl`  for?
-Thyl is intended for sensor systems, embedded sensor fusion with TinyML and the engineers and developers working with these technologies. Thyl can, for example, be used to filter out sensor noise or limit the measurement scope of sensors. 
+LengkuasSFL is intended for sensor systems, embedded sensor fusion with TinyML and the engineers and developers working with these technologies. LengkuasSFL can, for example, be used to filter out sensor noise or limit the measurement scope of sensors. It's **not** recommended for beginners to Programming, due to heavy use of low-level concepts like explicit state management, reference counting memory management, pointers and asynchronous operations.
 
 ## Contributing to ThylSFL
 First of all, thank you for considering contributing to ThylSFL. For more information on how to contribute, please see the [Contributing](https://github.com/TheSkyler-Dev/ThylSFL/blob/main/CONTRIBUTING.md) file.
