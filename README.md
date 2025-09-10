@@ -1,8 +1,8 @@
-# The ThylSFL Scripting Language
-ThylSFL or simply Thyl (pronounced "Thil") is an open source, embedded domain specific scripting language for real-time sensor stream filtering and setting measurement scope limits in sensor systems like for example TinyML with sensor fusion.
+# The LengkuasSFL Scripting Language
+LengkuasSFL or simply Lengkuas is an open source, embedded domain specific scripting language for real-time sensor stream filtering and setting measurement scope limits in sensor systems like for example TinyML with sensor fusion.
 
-## The `Thyl` Philosophy
-Thyl aims to follow the following key characteristics:
+## The `LenguasSFL` Philosophy
+LengkuasSFL aims to follow the following key characteristics:
 - Concise and easily readable
 - Prototyping and production in one single language
 - Can be interpreted or cpmpiled
@@ -11,5 +11,5 @@ Thyl aims to follow the following key characteristics:
 - easy to grasp, easy to maintain structure
 - FIFO (First-In, First-Out) for staggered data streams
 
-## Who or what is `Thyl`  for?
-Thyl is intended for sensor systems, embedded sensor fusion with TinyML and the engineers and developers working with these technologies. Thyl can, for example, be used to filter out sensor noise or limit the measurement scope of sensors. 
+## Who or what is `LengkuasSFL` for?
+LengkuasSFL is intended for sensor systems, embedded sensor fusion with TinyML and the engineers and developers working with these technologies. LengkuasSFL can, for example, be used to filter out sensor noise or limit the measurement scope of sensors. 

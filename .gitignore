@@ -44,3 +44,6 @@ Desktop.ini
 temp/
 # User-specific configuration that shouldn't be shared.
 local/
+
+#ignore ANTLR generated directories and files
+.antlr/
