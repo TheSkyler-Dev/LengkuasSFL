@@ -13,3 +13,6 @@ Thyl aims to follow the following key characteristics:
 
 ## Who or what is `Thyl`  for?
 Thyl is intended for sensor systems, embedded sensor fusion with TinyML and the engineers and developers working with these technologies. Thyl can, for example, be used to filter out sensor noise or limit the measurement scope of sensors. 
+
+## Contributing to ThylSFL
+First of all, thank you for considering contributing to ThylSFL. For more information on how to contribute, please see the [Contributing](https://github.com/TheSkyler-Dev/ThylSFL/blob/main/CONTRIBUTING.md) file.
