@@ -16,3 +16,6 @@ LengkuasSFL is intended for sensor systems, embedded sensor fusion with TinyML a
 
 ## Contributing to ThylSFL
 First of all, thank you for considering contributing to ThylSFL. For more information on how to contribute, please see the [Contributing](https://github.com/TheSkyler-Dev/ThylSFL/blob/main/CONTRIBUTING.md) file.
+
+## Documentation License
+All documentation for this project is licensed under the Creative Commons Attribution 4.0 International Public License. See the full license in the DOC_LICENSE file.
