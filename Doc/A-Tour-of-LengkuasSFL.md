@@ -2,7 +2,7 @@
 LengkuasSFL (Lengkuas Sensor Filter Language) is a refernce to the Greater Galangal root and, beyond the "SFL" suffix, has no direct technical link to programming.
 
 ### Style Guidelines
-There are style recommendations for coding in LengkuasSFL, such as using four spaces for indentation, instead of tab. Semicolons may be omitted, but adding them anyway is acceptable. It is highly recommended to keep spaces between values or variables and operators. Function names should use `camelCase` or `Snake_Case`, variables can use `PascalCase`, `Kebab-Case` or ideally `lowercase`. Variables must be initialized upon declaration
+There are style recommendations for coding in LengkuasSFL, such as using four spaces for indentation, instead of tab. Semicolons may be omitted at the end of a statement, but adding them anyway is acceptable. Semicolons are required in `for`loop expressions. It is highly recommended to keep spaces between values or variables and operators. Function names should use `camelCase` or `Snake_Case`, variables can use `PascalCase`, `Kebab-Case` or ideally `lowercase`. Variables must be initialized upon declaration
 
 ### Data Types and Variables
 `LengkuasSFL` has two kinds of data types: Primitives and sensor stream. Primitives are your usual data types:
@@ -22,7 +22,15 @@ const f64 pi = 3.141593
 Variables in `LengkuasSFL` are always nullable. Since variables must be initialized upon declaration, you'd use the `nil` value for a variable with an initial null value, which prevents the variable from being used anywhere until it gets a non-null value. This cannot be done with constants. Sensor streams (`sstream`) are special variables that give a sensor address or data pins connected to a sensor a name that can be called more easily. These enable you to handle sensor data streams more gracefully by eliminating the need to specify the address or data pin of a sensor each time you want to pass its data stream to a function or array.
 Usage:
 ```LengkuasSFL
-sstream MySensor = <sensor address or connected data pin>
+sstream MySensor = <sensor address or connected GPIO pin>
+```
+Example using a GPIO pin:
+```LengkuasSFL
+sstream MySensor = GPIO_PIN_17
+```
+Example using an I2C address:
+```LengkuasSFL
+sstream MySensor = 0x21
 ```
 
 
@@ -85,8 +93,8 @@ LengkuasSFL includes a straightforward, basic set of arithmetic operators and fu
 LengkuasSFL has your usual control flow structures: `while` loops, `do/while` loops and `for` loops. And both `if/else` and `switch` (declared with the `sw`keyword) statements. These are used no differently from other programming languages, but are delimited with `endwhile`, `endfor`, `endif` and `endsw`:
 **While loop**
 ```LengkuasSFL
-while(i32 i = 0; i < len(MyArray); i++):
-    ~iterator code here
+while(<condition>):
+    ~some code here
 endwhile
 ```
 **Do/While**
@@ -97,7 +105,7 @@ while(<condition>)
 ```
 **For loop**
 ```LengkuasSFL
-for(i in range 0..10):
+for(i32 i = 0; i < len(MyArray); i++):
     ~code here
 endfor
 ```
