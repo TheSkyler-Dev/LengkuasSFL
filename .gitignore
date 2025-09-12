@@ -47,3 +47,8 @@ local/
 
 #ignore ANTLR generated directories and files
 .antlr/
+
+#ignore unrelated files
+*.css
+*.htm
+*.html
