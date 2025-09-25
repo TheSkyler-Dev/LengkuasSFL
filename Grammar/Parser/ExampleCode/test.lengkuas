@@ -1,0 +1,5 @@
+fun main()->i32:
+    str greeting = "Hello World"
+    msgOut(greeting)
+    ret 0
+endfun
