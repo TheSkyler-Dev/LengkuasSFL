@@ -18,9 +18,77 @@ LengkuasSFL aims to follow the following key characteristics:
 
 LengkuasSFL is intended for sensor systems, embedded sensor fusion with TinyML and the engineers and developers working with these technologies. LengkuasSFL can, for example, be used to filter out sensor noise or limit the measurement scope of sensors. It's **not** recommended for beginners to Programming, due to heavy use of low-level concepts like explicit state management, reference counting memory management, pointers and asynchronous operations.
 
-## Contributing to ThylSFL
+## Building the C++ Parser
 
-First of all, thank you for considering contributing to ThylSFL. For more information on how to contribute, please see the [Contributing](https://github.com/TheSkyler-Dev/ThylSFL/blob/main/CONTRIBUTING.md) file.
+### Prerequisites
+
+- **CMake** 3.14 or later
+- **C++17 compatible compiler**:
+  - **Windows**: Clang 21.1.0+ (recommended) or MSVC 2019+
+  - **Linux/macOS**: GCC 8+ or Clang 8+
+- **Git** (for automatic ANTLR4 dependency download)
+- **Internet connection** (required for first build to download ANTLR4 runtime)
+
+### Build Instructions
+
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/TheSkyler-Dev/LengkuasSFL.git
+   cd LengkuasSFL
+   ```
+
+2. **Navigate to the parser directory**:
+   ```bash
+   cd Grammar/Parser/src
+   ```
+
+3. **Configure the build** (using Ninja generator for best performance):
+   ```bash
+   cmake -B build -G Ninja .
+   ```
+   
+   Or with default generator:
+   ```bash
+   cmake -B build .
+   ```
+
+4. **Build the project**:
+   ```bash
+   cmake --build build
+   ```
+
+5. **Run the demo parser**:
+   ```bash
+   # Windows
+   .\build\bin\LengkuasDemoParser.exe
+   
+   # Linux/macOS
+   ./build/bin/LengkuasDemoParser
+   ```
+
+### Build Notes
+
+- **First build**: Takes ~40 seconds (downloads ANTLR4 4.13.1 runtime)
+- **Subsequent builds**: Much faster (dependencies are cached)
+- **Clean builds**: Fast (no re-download needed)
+- The build system automatically patches ANTLR4 runtime compatibility issues
+
+### Build Output
+
+Successful build produces:
+- `LengkuasGrammar` - Static library with parser implementation
+- `LengkuasDemoParser` - Demo executable for testing the parser
+
+### Troubleshooting
+
+- **CMake errors**: Ensure CMake 3.14+ is installed
+- **Compiler errors**: Make sure you have C++17 support
+- **Download failures**: Check internet connection and GitHub access
+- **Build failures**: Try cleaning with `rm -rf build` and rebuilding
+
+## Contributing to LengkuasSFL
+
+First of all, thank you for considering contributing to LengkuasSFL. For more information on how to contribute, please see the [Contributing](https://github.com/TheSkyler-Dev/LengkuasSFL/blob/main/CONTRIBUTING.md) file.
 
 ## Documentation License
 
