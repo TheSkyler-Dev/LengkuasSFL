@@ -6,7 +6,7 @@
 #include "LengkuasSFLParser.h"
 #include "LengkuasSFLBaseListener.h"
 
-class ErrorListener : publi antlr4::BaseErrorListener
+class ErrorListener : public antlr4::BaseErrorListener
 {
     public:
         void syntaxError(antlr4::Recognizer *recognizer, antlr4::Token *offendingSymbol, size_t line, size_t charPositionInLine, const std::string &msg, std::exception_ptr e) override
@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
         else
         {
             //use test str if no file provided
-            inputText = 'msgOut("Hello World!")';
+            inputText = "msgOut(\"Hello World!\")";
             input = antlr4::ANTLRInputStream(inputText);
         }
 
