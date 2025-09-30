@@ -25,14 +25,19 @@ cmake_install.cmake
 # These should be regenerated from the grammar files and not committed.
 # The `gen` folder is a common output location for ANTLR4.
 /gen/
-# Generated ANTLR4 files (uncomment if you want to exclude them)
-# *Lexer.cpp
-# *Parser.cpp
-# *Listener.cpp
-# *BaseListener.cpp
-# *Visitor.cpp
-# *.tokens
-# *.interp
+# Generated ANTLR4 files - exclude from repository
+*Lexer.cpp
+*Lexer.h
+*Parser.cpp
+*Parser.h
+*Listener.cpp
+*Listener.h
+*BaseListener.cpp
+*BaseListener.h
+*Visitor.cpp
+*Visitor.h
+*.tokens
+*.interp
 # You can customize these based on your chosen language binding.
 
 # --- IDE and Editor Files ---
