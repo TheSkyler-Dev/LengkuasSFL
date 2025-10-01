@@ -66,11 +66,11 @@ primaryExpression: NUMBER
 
 arithmeticOperator: PLUS | MINUS | MULT | DIV | MOD;
 
-arithmeticOperation: expression (arithmeticOperator expression)+;
+arithmeticOperation: expression (arithmeticOperator expression)*;
 
 templateLiteral: STRING ('$' IDENTIFIER | '${' expression '}$')*;
 
-functionDeclaration: 'fun' IDENTIFIER LPAREN (parameter (COMMA parameter)*)? RPAREN COLON statement+ 'endfun';
+functionDeclaration: 'fun' IDENTIFIER LPAREN (parameter (COMMA parameter)*)? RPAREN ARROW dataType COLON statement+ 'endfun';
 
 parameter: dataType IDENTIFIER;
 
