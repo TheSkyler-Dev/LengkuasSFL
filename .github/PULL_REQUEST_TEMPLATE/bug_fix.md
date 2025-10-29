@@ -9,9 +9,9 @@ Fix type: Bug fix
 ## Testing
 - Steps to reproduce the original bug.
 - Steps to verify the fix (commands, test cases, CI steps).
-  Example:
-    i. Build with CMake: `mkdir duild && cd build && cmake .. && cmake --build .`
-   ii. Run tests: ctest -V
+Example:
+  1. Build with CMake: `mkdir duild && cd build && cmake .. && cmake --build .`
+  2. Run tests: ctest -V
 
 ## Checklist
 
