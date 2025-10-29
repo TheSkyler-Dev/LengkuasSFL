@@ -2,7 +2,7 @@ Fix type: Documentation improvement
 
 ## Summary
 
-    Short description of the documentation changes (files changed, new diagrams, clarified text).
+Short description of the documentation changes (files changed, new diagrams, clarified text).
 
 ## Files changed
 
@@ -10,7 +10,7 @@ Fix type: Documentation improvement
 
 ## Embedding images into GRAMMAR_SPEC.md
 
-- Put images under docs/images/ or docs/assets/ and reference them with relative paths: Example: ![Syntax diagram](docs/images/syntax-diagram.svg)
+- Put images under docs/images/ or docs/assets/ and reference them with relative paths: Example: `![Syntax diagram](docs/images/syntax-diagram.svg)`
 - Prefer SVG for diagrams (crisp rendering). Use PNG if SVG is not possible.
 - Commit image files alongside the markdown changes in the same PR.
 
@@ -22,11 +22,11 @@ How to preview locally:
 
 Checklist
 
-- Images are added under docs/images or docs/assets with descriptive names
-- Images are referenced with relative paths
-- I previewed the markdown locally and verified images render
-- I updated any related indexes or README links
-- I included alt text for images
+-[] Images are added under docs/images or docs/assets with descriptive names
+-[] Images are referenced with relative paths
+-[] I previewed the markdown locally and verified images render
+-[] I updated any related indexes or README links
+-[] I included alt text for images
 
 ## Notes for reviewers
 
