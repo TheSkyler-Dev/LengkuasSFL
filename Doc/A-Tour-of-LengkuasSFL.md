@@ -61,13 +61,13 @@ MyArr.push(MySensor) ~pushing a sensor stream to myArr
 MyArr.pop([<index>])
 ```
 Todeclare a dictionary, which stores data as key-value pairs and is useful for associating multiple sensors to their respective sensor IDs and sensor/filter function configuration.
-these use the `dict` keword and key-value-pairs are enclosed in curly braces. Something like this:
+these use the `dict` keword and key-value-pairs are enclosed in curly braces. for a dictionary to take data of any type, the `any` keyword is used. Something like this:
 ```LengkuasSFL
 f64 dict MyDict = {"sensor_A_ID": nil, "sensor_B_ID": nil}
 ```
 or for filter configurations:
 ```LengkuasSFL
-i32 dict config = {"window_size": 5, "window_type": "samples"}
+any dict config = {"window_size": 5, "window_type": "samples"}
 ```
 
 ### Basic Arithmetic and Logic Operators
@@ -88,7 +88,7 @@ LengkuasSFL includes a straightforward, basic set of arithmetic operators and fu
 | Operator | Description |
 | -------- | ----------- |
 | `&&`     | AND         |
-| `||`     | OR          |
+| `\|\|`   | OR          |
 | `!`      | NOT         |
 
 **Table of functions for commonly used arithmetic**
