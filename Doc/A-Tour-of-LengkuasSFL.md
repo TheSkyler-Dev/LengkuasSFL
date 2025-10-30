@@ -79,7 +79,7 @@ LengkuasSFL includes a straightforward, basic set of arithmetic operators and fu
 | Operator | Description |
 | -------- | ----------- |
 | `&&`     | AND         |
-| `\|\|`   | OR          |
+| `||`     | OR          |
 | `!`      | NOT         |
 
 **Table of functions for commonly used arithmetic**
@@ -137,7 +137,7 @@ sw(<checking variable>):
 endsw
 ```
 ### Functions
-Functions in LengkuasSFL are a core component for writing modular, reusable code. A LengkuasSFL program must always have one main function, which is the standard entry point. The return type is specified after the function name with the arrow operator (`->`). Valid return types are: `i32`, `i64`, `none`. The return keyword in LengkuasSFL is `ret`. To declare a function, you use the `fun` keyword, and terminate it with 'endfun`.
+Functions in LengkuasSFL are a core component for writing modular, reusable code. A LengkuasSFL program must always have one main function, which is the standard entry point. The return type is specified after the function name with the arrow operator (`->`). Valid return types are all primitives, `sstream` and  `none`. The return keyword in LengkuasSFL is `ret`. To declare a function, you use the `fun` keyword, and terminate it with 'endfun`.
 In LengkuasSFL, functions are declared as follows:
 ```LengkuasSFL
 fun myFunc(<args>)->i32:
