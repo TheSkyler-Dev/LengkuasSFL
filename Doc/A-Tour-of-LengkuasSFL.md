@@ -46,7 +46,7 @@ msgOut("Math expression 9 + 10 = ${9 + 10}")
 ```
 
 ### Data Structures 
-LengkuasSFL only has one data structure as of now: Arrays. They can store a bunch of data at once. Arrays are simply declared by adding the `arr` keyword in the declaration. Something like this:
+LengkuasSFL only has two data structures as of now: Arrays and Dictionaries. They can store a bunch of data at once. Arrays are simply declared by adding the `arr` keyword in the declaration. Something like this:
 ```LengkuasSFL
 f64 arr MyArray = [0.5, 0.49, ...]
 ```
@@ -59,6 +59,15 @@ MyArr.push(MySensor) ~pushing a sensor stream to myArr
 
 ~deleting from an array
 MyArr.pop([<index>])
+```
+Todeclare a dictionary, which stores data as key-value pairs and is useful for associating multiple sensors to their respective sensor IDs and sensor/filter function configuration.
+these use the `dict` keword and key-value-pairs are enclosed in curly braces. Something like this:
+```LengkuasSFL
+f64 dict MyDict = {"sensor_A_ID": nil, "sensor_B_ID": nil}
+```
+or for filter configurations:
+```LengkuasSFL
+i32 dict config = {"window_size": 5, "window_type": "samples"}
 ```
 
 ### Basic Arithmetic and Logic Operators
@@ -101,7 +110,7 @@ endwhile
 ```LengkuasSFL
 do:
     ~code here, executes at least once before condition is checked
-while(<condition>)
+enddo while(<condition>)
 ```
 **For loop**
 ```LengkuasSFL
