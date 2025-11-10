@@ -28,6 +28,7 @@ LengkuasSFL is intended for sensor systems, embedded sensor fusion with TinyML a
   - **Linux/macOS**: GCC 8+ or Clang 8+
 - **Git** (for automatic ANTLR4 dependency download)
 - **Internet connection** (required for first build to download ANTLR4 runtime)
+- **ANTLR4** (to generate parser components from the grammar file)
 
 ### Build Instructions
 
