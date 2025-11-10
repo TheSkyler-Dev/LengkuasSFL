@@ -28,6 +28,7 @@ LengkuasSFL is intended for sensor systems, embedded sensor fusion with TinyML a
   - **Linux/macOS**: GCC 8+ or Clang 8+
 - **Git** (for automatic ANTLR4 dependency download)
 - **Internet connection** (required for first build to download ANTLR4 runtime)
+- **ANTLR4** (to generate parser components from the grammar file)
 
 ### Build Instructions
 
@@ -36,13 +37,18 @@ LengkuasSFL is intended for sensor systems, embedded sensor fusion with TinyML a
    git clone https://github.com/TheSkyler-Dev/LengkuasSFL.git
    cd LengkuasSFL
    ```
+2. **Generate Parser and Lexer headers from ANTLR grammar definition**
+   ```bash
+   cd Grammar
+   antlr4 -Dlanguage=Cpp LengkuasSFL.g4
+   ```
 
-2. **Navigate to the parser directory**:
+3. **Navigate to the parser directory**:
    ```bash
    cd Grammar/Parser/src
    ```
 
-3. **Configure the build** (using Ninja generator for best performance):
+4. **Configure the build** (using Ninja generator for best performance):
    ```bash
    cmake -B build -G Ninja .
    ```
@@ -52,12 +58,12 @@ LengkuasSFL is intended for sensor systems, embedded sensor fusion with TinyML a
    cmake -B build .
    ```
 
-4. **Build the project**:
+5. **Build the project**:
    ```bash
    cmake --build build
    ```
 
-5. **Run the demo parser**:
+6. **Run the demo parser**:
    ```bash
    # Windows
    .\build\bin\LengkuasDemoParser.exe
