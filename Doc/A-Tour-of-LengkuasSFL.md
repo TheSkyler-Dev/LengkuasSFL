@@ -1,6 +1,15 @@
 ### Why `LengkuasSFL`?
 LengkuasSFL (Lengkuas Sensor Filter Language) is a refernce to the Greater Galangal root and, beyond the "SFL" suffix, has no direct technical link to programming.
 
+### Design Philosophy
+LengkuasSFL is a procedural language. Although certain syntax may *look* object-oriented (e.g. `MySensor.temp(celsius)`), it is **purely syntactic sugar**. Under the hood, such expressions are rewritten by the compiler as regular function calls:
+```
+MySensor.temp(celcius)
+~becomes:
+temp(MySensor, celcius)
+```
+This keeps Lengkuas deterministic and efficient while improving readability.
+
 ### Style Guidelines
 There are style recommendations for coding in LengkuasSFL, such as using four spaces for indentation, instead of tab. Semicolons may be omitted at the end of a statement, but adding them anyway is acceptable. Semicolons are required in `for`loop expressions. It is highly recommended to keep spaces between values or variables and operators. Function names should use `camelCase` or `Snake_Case`, variables can use `PascalCase`, `Kebab-Case` or ideally `lowercase`. Variables must be initialized upon declaration
 
@@ -19,7 +28,7 @@ Variables have no special declaration keyword, while constants use the standard 
 f64 MyVar = 9.81
 const f64 pi = 3.141593
 ```
-Variables in `LengkuasSFL` are always nullable. Since variables must be initialized upon declaration, you'd use the `nil` value for a variable with an initial null value, which prevents the variable from being used anywhere until it gets a non-null value. This cannot be done with constants. Sensor streams (`sstream`) are special variables that give a sensor address or data pins connected to a sensor a name that can be called more easily. These enable you to handle sensor data streams more gracefully by eliminating the need to specify the address or data pin of a sensor each time you want to pass its data stream to a function or array.
+Variables in `LengkuasSFL` are always nullable. Since variables must be initialized upon declaration, you'd use the `nil` value for a variable with an initial null value, which prevents the variable from being used anywhere until it gets a non-null value. This cannot be done with constants. Sensor streams (`sstream`) are special variables that give a sensor address or data pins connected to a sensor a name that can be called more easily. These enable you to handle sensor data streams more gracefully by eliminating the need to specify the address or data pin of a sensor each time you want to pass its data stream to a function or array. It's important to note that a variable of type `sstream`, while technically nullable, will only accept hardware addresses (GPIO Pins, UART, I²C) upon declaration and must be declare with such.
 Usage:
 ```LengkuasSFL
 sstream MySensor = <sensor address or connected GPIO pin>
@@ -178,4 +187,66 @@ endtry
 ```
 
 ### Pointer References
-Pointer references play a crucial role in memory management, debugging and low-level memory references to variables and data structures. LengkuasSFL uses the caret (`^`) for pointers.
+Pointer references play a crucial role in memory management, debugging and low-level memory references to variables and data structures. LengkuasSFL uses the caret (`^`) for pointers. While LengkuasSFL primarily uses reference counting, it allows for some manual memory management and is also useful for exposing parts of the program to the Foreign Function Interface built into LengkuasSFL to allow custom functions to be called externally in a C/C++ or other externam program or system if necessary.
+
+## A Deeper Dive into LengkuasSFL `stdlib`
+LengkuasSFL, as a domain-specific language, of course has some more specific features than the basics discussed above (which are also all part of the standard library). The LengkuasSFL standard library (stdlib) provides a set of built-in functions and keywords for sensor preprocessing, filtering, and communication.
+It is designed to be lightweight, deterministic, and embedded-friendly while keeping code self-documenting and expressive.
+
+### Math & Numeric Utilities
+
+
+| Function                              | Signature                                                                                                |
+| ------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| `limits(min?, max?)`                  | Clamps a numeric value to a defined range. If only one bound is given, acts as either a min or max clamp |
+| `rnd(n)`                              | Rounds a floating-point value to *n* decimal places. Example: `rnd(2)` -> round to two decimals.         |
+| `normalize(sstream)`                  | Normalizes an `sstream` to range `[0, 1]`.                                                               |
+| `scale(inMin, inMax, outMin, outMax)` | Maps a reading from one range to another.                                                                |
+
+### Sensor Measurement Utilities
+
+| Function           | Signature                                                                                                                                                                                                       |
+| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `temp(<unit>)`     | Converts the reading from a temperature sensor `sstream` to the chosen unit. Vald units: `celcius`, `farenheit`, `kelvin`. Numeric limits are applied automatically. Example: `msgOut(tempProbe.temp(celcius))` |
+| `humidity(<unit>)` | Interprets humidity sensor data (e.g. %RH)                                                                                                                                                                      |
+| `pressure(<unit>)` | Converts pressure sensor data to target unit (e.g. `kPa`, `bar`)                                                                                                                                                |
+
+### Signal & Filter Functions
+
+| Function                  | Signature                                                                                                |
+| ------------------------- | -------------------------------------------------------------------------------------------------------- |
+| `avg(<sstream>)`          | Returns the moving average of the last second or N samples from a sensor stream.                         |
+| `kalman(<config dict>)`   | Applies a Kalman filter using parameters in a configuration dictionary (e.g. `{"R": 0.01, "Q": 0.1}`).   |
+| `loPass(<config dict>)`   | Low-pass filter; configuration dictionary may include keys such as `{"alpha": 0.5}` or `{"window": 10}`. |
+| `hiPass(<config dict>)`   | High-pass filter for removing DC bias or drift.                                                          |
+| `bandPass(<config dict>)` | Band-pass filter for specific frequency ranges.                                                          |
+| `delta(<sstream>)`        | Calculates the difference (delta) between consecutive readings.                                          |
+| `integrate(<sstream>)`    | Integrates sensor values over time.                                                                      |
+| `threshold(<value>)`      | Returns `true` if current reading exceeds a threshold.                                                   |
+| `debounce(<time_ms>)`     | Software debounce for digital sensors.                                                                   |
+
+
+### System Utilities
+
+| Function                  | Signature                                           |
+| ------------------------- | --------------------------------------------------- |
+| `time()`                  | Returns system uptime or current timestamp.         |
+| `sleep(<ms>)`             | Pauses execution for the given duration.            |
+| `panic(err)`              | Raises a non-recoverable error and halts execution. |
+| `errno()`                 | Returns last error code.                            |
+
+### Chaining and readability
+Most stdlib functions can be chained for clarity.
+Chaining is **syntactic sugar**, internally desugared into nested function calls:
+```lengkuas
+TempSensor.temp(celcius).limits(0,100).rnd(2)
+→ rnd(limits(temp(TempSensor, celcius), 0, 100), 2)
+```
+This feature keeps code readable and self-documenting without introducing true object orientation.
+
+### Planned Extensions
+- `calibrate(<sstream>, <config dict>)` — apply calibration constants or offsets
+- `event(<sstream>)` — asynchronous event listener for sensor triggers 
+- `fft(<array>)` — simple frequency domain transform (for richer signals)
+
+For more in-depth information on `stdlib`, please refer to the **LengkuasSFL Standard Library Reference**.
