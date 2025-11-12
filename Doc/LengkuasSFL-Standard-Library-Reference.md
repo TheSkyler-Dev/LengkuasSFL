@@ -23,42 +23,42 @@ This keeps Lengkuas deterministic and efficient while improving readability.
 | **System Utilities**             | Time, logging and async helpers.                         |
 
 ## Math & Numeric Utilities
-| Function                                     | Signature                                                                                                 | Description |
-| -------------------------------------------- | --------------------------------------------------------------------------------------------------------- | ----------- |
-| `limits(value, min?, max?)`                  | Clamps a numeric value to a defined range. If only one bound is given, acts as either a min or max clamp. |             |
-| `rnd(n)`                                     | Rounds a floating-point value to *n* decimal places. Example: `rnd(2)` → round to two decimals.           |             |
-| `normalize(stream)`                          | Normalizes a stream or array to range `[0, 1]`.                                                           |             |
-| `clamp(value, min, max)`                     | (Alias of `limits()`) Keeps values within bounds.                                                         |             |
-| `scale(value, inMin, inMax, outMin, outMax)` | Maps a reading from one range to another.                                                                 |             |
+| Function Signature                           | Description                                                                              |
+| -------------------------------------------- | ---------------------------------------------------------------------------------------  |
+| `limits(value, min?, max?)`                  | Clamps a numeric value to a defined range. If only one bound is given, acts as either a min or max clamp. |
+| `rnd(n)`                                     | Rounds a floating-point value to *n* decimal places. Example: `rnd(2)` → round to two decimals.           |
+| `normalize(stream)`                          | Normalizes a stream or array to range `[0, 1]`.                                          |
+| `clamp(value, min, max)`                     | (Alias of `limits()`) Keeps values within bounds.                                        |
+| `scale(value, inMin, inMax, outMin, outMax)` | Maps a reading from one range to another.                                                |
 
 ## Sensor Measurement Utilities
-| Function                       | Signature                                                                                                                                                       | Description |
-| ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| `temp(<unit>)`                 | Converts the reading from a temperature sensor `sstream` to the chosen unit. Units: `celcius`, `farenheit`, `kelvin`. Numeric limits are applied automatically. |             |
-| Example                        | `msgOut(tempProbe.temp(celcius))`                                                                                                                               |             |
-| `humidity(<unit>)` *(planned)* | Interprets humidity sensor data (e.g. %RH).                                                                                                                     |             |
-| `pressure(<unit>)` *(planned)* | Converts pressure sensor data to target unit (e.g. `kPa`, `bar`).                                                                                               |             |
+| Function Signature             | Description                                                                                                     |
+| ------------------------------ | --------------------------------------------------------------------------------------------------------------- |
+| `temp(<unit>)`                 | Converts the reading from a temperature sensor `sstream` to the chosen unit. Units: `celcius`, `farenheit`, `kelvin`. Numeric limits are applied automatically. |
+| Example                        | `msgOut(tempProbe.temp(celcius))`                                                                               |
+| `humidity(<unit>)` *(planned)* | Interprets humidity sensor data (e.g. %RH).                                                                     |
+| `pressure(<unit>)` *(planned)* | Converts pressure sensor data to target unit (e.g. `kPa`, `bar`).                                               |
 
 ## Signal & Filter Functions
-| Function                              | Signature                                                                                                | Description |
-| ------------------------------------- | -------------------------------------------------------------------------------------------------------- | ----------- |
-| `avg(<sstream>)`                      | Returns the moving average of the last second or N samples from a stream.                                |             |
-| `kalman(<config dict>)`               | Applies a Kalman filter using parameters in a configuration dictionary (e.g. `{"R": 0.01, "Q": 0.1}`).   |             |
-| `loPass(<config dict>)`               | Low-pass filter; configuration dictionary may include keys such as `{"alpha": 0.5}` or `{"window": 10}`. |             |
-| `hiPass(<config dict>)` *(planned)*   | High-pass filter for removing DC bias or drift.                                                          |             |
-| `bandPass(<config dict>)` *(planned)* | Band-pass filter for specific frequency ranges.                                                          |             |
-| `delta(<sstream>)`                     | Calculates the difference (delta) between consecutive readings.                                                  |             |
-| `integrate(<sstream>)`                | Integrates sensor values over time.                                                                      |             |
-| `threshold(<sstream>, <value>)`       | Returns `true` if current reading exceeds a threshold.                                                   |             |
-| `debounce(<sstream>, <time_ms>)`      | Software debounce for digital sensors.                                                                   |             |
+| Function Signature                    | Description                                                                                              |
+| ------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| `avg(<sstream>)`                      | Returns the moving average of the last second or N samples from a stream.                                |
+| `kalman(<config dict>)`               | Applies a Kalman filter using parameters in a configuration dictionary (e.g. `{"R": 0.01, "Q": 0.1}`).   |
+| `loPass(<config dict>)`               | Low-pass filter; configuration dictionary may include keys such as `{"alpha": 0.5}` or `{"window": 10}`. |
+| `hiPass(<config dict>)` *(planned)*   | High-pass filter for removing DC bias or drift.                                                          |
+| `bandPass(<config dict>)` *(planned)* | Band-pass filter for specific frequency ranges.                                                          |
+| `delta(<sstream>)`                    | Calculates the difference (delta) between consecutive readings.                                          |
+| `integrate(<sstream>)`                | Integrates sensor values over time.                                                                      |
+| `threshold(<sstream>, <value>)`       | Returns `true` if current reading exceeds a threshold.                                                   |
+| `debounce(<sstream>, <time_ms>)`      | Software debounce for digital sensors.                                                                   |
 
 # I/O and Communication
-| Function                | Signature                                                                                              | Description |
-| ----------------------- | ------------------------------------------------------------------------------------------------------ | ----------- |
-| `msgIn(target)`         | Receives input from a connected source.                                                                |             |
-| `msgOut(target, value)` | Transmits data to a connected display or bus. The target may be a GPIO pin, UART port, or I²C address. |             |
-| `flush(target)`         | Forces pending transmissions to complete.                                                              |             |
-| `broadcast(value)`      | Sends data to all defined outputs.                                                                     |             |
+| Function Signature      | Description                                                                                            |
+| ----------------------- | ------------------------------------------------------------------------------------------------------ |
+| `msgIn(target)`         | Receives input from a connected source.                                                                |
+| `msgOut(target, value)` | Transmits data to a connected display or bus. The target may be a GPIO pin, UART port, or I²C address. |
+| `flush(target)`         | Forces pending transmissions to complete.                                                              |
+| `broadcast(value)`      | Sends data to all defined outputs.                                                                     |
 Example:
 ```lengkuas
 sstream Display = 0x21
@@ -66,12 +66,12 @@ msgOut(Display, tempProbe.temp(celcius).rnd(2))
 ```
 
 ## System Utilities
-| Function                        | Signature                                           | Description |
-| ------------------------------- | --------------------------------------------------- | ----------- |
-| `time()`                        | Returns system uptime or current timestamp.         |             |
-| `sleep(ms)`                     | Pauses execution for the given duration.            |             |
-| `panic(err)`                    | Raises a non-recoverable error and halts execution. |             |
-| `errno()`                       | Returns last error code.                            |             |
+| Function  Signature             | Description                                         |
+| ------------------------------- | --------------------------------------------------- |
+| `time()`                        | Returns system uptime or current timestamp.         |
+| `sleep(ms)`                     | Pauses execution for the given duration.            |
+| `panic(err)`                    | Raises a non-recoverable error and halts execution. |
+| `errno()`                       | Returns last error code.                            |
 
 ## Asynchronous Functions & Keywords
 | Keyword                            | Description                                                                    |

@@ -196,7 +196,7 @@ It is designed to be lightweight, deterministic, and embedded-friendly while kee
 ### Math & Numeric Utilities
 
 
-| Function                              | Signature                                                                                                |
+| Function Signature                             | Description                                                                                                |
 | ------------------------------------- | -------------------------------------------------------------------------------------------------------- |
 | `limits(min?, max?)`                  | Clamps a numeric value to a defined range. If only one bound is given, acts as either a min or max clamp |
 | `rnd(n)`                              | Rounds a floating-point value to *n* decimal places. Example: `rnd(2)` -> round to two decimals.         |
@@ -205,7 +205,7 @@ It is designed to be lightweight, deterministic, and embedded-friendly while kee
 
 ### Sensor Measurement Utilities
 
-| Function           | Signature                                                                                                                                                                                                       |
+| Function Signature          | Description                                                                                                                                                                                                       |
 | ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `temp(<unit>)`     | Converts the reading from a temperature sensor `sstream` to the chosen unit. Vald units: `celcius`, `farenheit`, `kelvin`. Numeric limits are applied automatically. Example: `msgOut(tempProbe.temp(celcius))` |
 | `humidity(<unit>)` | Interprets humidity sensor data (e.g. %RH)                                                                                                                                                                      |
@@ -213,7 +213,7 @@ It is designed to be lightweight, deterministic, and embedded-friendly while kee
 
 ### Signal & Filter Functions
 
-| Function                  | Signature                                                                                                |
+| Function Signature        | Description                                                                                              |
 | ------------------------- | -------------------------------------------------------------------------------------------------------- |
 | `avg(<sstream>)`          | Returns the moving average of the last second or N samples from a sensor stream.                         |
 | `kalman(<config dict>)`   | Applies a Kalman filter using parameters in a configuration dictionary (e.g. `{"R": 0.01, "Q": 0.1}`).   |
@@ -228,7 +228,7 @@ It is designed to be lightweight, deterministic, and embedded-friendly while kee
 
 ### System Utilities
 
-| Function                  | Signature                                           |
+| Function Signature        | Description                                         |
 | ------------------------- | --------------------------------------------------- |
 | `time()`                  | Returns system uptime or current timestamp.         |
 | `sleep(<ms>)`             | Pauses execution for the given duration.            |
