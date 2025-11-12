@@ -1,6 +1,12 @@
 grammar LengkuasSFL;
 
 //Lexer rules
+CONST: 'const';
+ARR: 'arr';
+DICT: 'dict';
+CELSIUS: 'celsius';
+FAHRENHEIT: 'fahrenheit';
+KELVIN: 'kelvin';
 IDENTIFIER: [a-zA-Z_][a-zA-Z0-9_]*;
 NUMBER: [0-9]+ ('.' [0-9+])? | '0x' [0-9a-fA-F];
 STRING: '"' .*? '"';
@@ -31,12 +37,6 @@ MULTILINE_COMMENT: '~~' .*? '~~' -> skip;
 AND: '&&';
 OR: '||';
 NOT: '!';
-ARR: 'arr';
-DICT: 'dict';
-CELCIUS: 'celcius';
-FARENHEIT: 'farenheit';
-KELVIN: 'kelvin';
-CONST: 'const';
 
 //Parser rules
 program: (statement)* EOF;
@@ -52,7 +52,7 @@ statement: variableDeclaration
          | pointerReference
          | asyncBlock;
 
-variableDeclaration: (CONST)? dataType (ARR)? (DICT)? IDENTIFIER ASSIGN expression;
+variableDeclaration: (CONST)? dataType (ARR | DICT)? IDENTIFIER ASSIGN expression;
 
 dataType: 'str' | 'i32' | 'i64' | 'f32' | 'f64' | 'bool' | 'sstream';
 

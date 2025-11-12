@@ -7,8 +7,8 @@ LengkuasSFL is a procedural language.
 Although certain syntax may look object-oriented (e.g. MySensor.temp(celcius)), it is **purely syntactic sugar**.
 Under the hood, such expressions are rewritten by the compiler as regular function calls:
 ```
-MySensor.temp(celcius)
-→ temp(MySensor, celcius)
+MySensor.temp(celsius)
+→ temp(MySensor, celsius)
 ```
 This keeps Lengkuas deterministic and efficient while improving readability.
 
@@ -34,7 +34,7 @@ This keeps Lengkuas deterministic and efficient while improving readability.
 ## Sensor Measurement Utilities
 | Function Signature             | Description                                                                                                     |
 | ------------------------------ | --------------------------------------------------------------------------------------------------------------- |
-| `temp(<unit>)`                 | Converts the reading from a temperature sensor `sstream` to the chosen unit. Units: `celcius`, `farenheit`, `kelvin`. Numeric limits are applied automatically. |
+| `temp(<unit>)`                 | Converts the reading from a temperature sensor `sstream` to the chosen unit. Units: `celsius`, `fahrenheit`, `kelvin`. Numeric limits are applied automatically. |
 | Example                        | `msgOut(tempProbe.temp(celcius))`                                                                               |
 | `humidity(<unit>)` *(planned)* | Interprets humidity sensor data (e.g. %RH).                                                                     |
 | `pressure(<unit>)` *(planned)* | Converts pressure sensor data to target unit (e.g. `kPa`, `bar`).                                               |
@@ -63,7 +63,7 @@ This keeps Lengkuas deterministic and efficient while improving readability.
 Example:
 ```lengkuas
 sstream Display = 0x21
-msgOut(Display, tempProbe.temp(celcius).rnd(2))
+msgOut(Display, tempProbe.temp(celsius).rnd(2))
 ```
 
 ## System Utilities
@@ -83,7 +83,7 @@ msgOut(Display, tempProbe.temp(celcius).rnd(2))
 Example:
 ```lengkuas
 desync ProcessTemp(TempSensor)->f64:
-    f64 val = TempSensor.temp(celcius)
+    f64 val = TempSensor.temp(celsius)
     val = loPass(TempSensor, {"alpha": 0.4})
     msgOut(Display, val)
     ret val
@@ -94,8 +94,8 @@ resync
 Most stdlib functions can be chained for clarity.
 Chaining is **syntactic sugar**, internally desugared into nested function calls:
 ```lengkuas
-TempSensor.temp(celcius).limits(0,100).rnd(2)
-→ rnd(limits(temp(TempSensor, celcius), 0, 100), 2)
+TempSensor.temp(celsius).limits(0,100).rnd(2)
+→ rnd(limits(temp(TempSensor, celsius), 0, 100), 2)
 ```
 This feature keeps code readable and self-documenting without introducing true object orientation.
 
