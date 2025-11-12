@@ -207,7 +207,7 @@ It is designed to be lightweight, deterministic, and embedded-friendly while kee
 
 | Function Signature          | Description                                                                                                                                                                                                       |
 | ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `temp(<unit>)`     | Converts the reading from a temperature sensor `sstream` to the chosen unit. Vald units: `celcius`, `farenheit`, `kelvin`. Numeric limits are applied automatically. Example: `msgOut(tempProbe.temp(celcius))` |
+| `temp(<unit>)`     | Converts the reading from a temperature sensor `sstream` to the chosen unit. Vald units: `celsius`, `fahrenheit`, `kelvin`. Numeric limits are applied automatically. Example: `msgOut(tempProbe.temp(celsius))` |
 | `humidity(<unit>)` | Interprets humidity sensor data (e.g. %RH)                                                                                                                                                                      |
 | `pressure(<unit>)` | Converts pressure sensor data to target unit (e.g. `kPa`, `bar`)                                                                                                                                                |
 
@@ -239,8 +239,8 @@ It is designed to be lightweight, deterministic, and embedded-friendly while kee
 Most stdlib functions can be chained for clarity.
 Chaining is **syntactic sugar**, internally desugared into nested function calls:
 ```lengkuas
-TempSensor.temp(celcius).limits(0,100).rnd(2)
-→ rnd(limits(temp(TempSensor, celcius), 0, 100), 2)
+TempSensor.temp(celsius).limits(0,100).rnd(2)
+→ rnd(limits(temp(TempSensor, celsius), 0, 100), 2)
 ```
 This feature keeps code readable and self-documenting without introducing true object orientation.
 

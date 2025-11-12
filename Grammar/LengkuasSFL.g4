@@ -1,6 +1,12 @@
 grammar LengkuasSFL;
 
 //Lexer rules
+CONST: 'const';
+ARR: 'arr';
+DICT: 'dict';
+CELSIUS: 'celsius';
+FAHRENHEIT: 'fahrenheit';
+KELVIN: 'kelvin';
 IDENTIFIER: [a-zA-Z_][a-zA-Z0-9_]*;
 NUMBER: [0-9]+ ('.' [0-9+])? | '0x' [0-9a-fA-F];
 STRING: '"' .*? '"';
@@ -31,7 +37,6 @@ MULTILINE_COMMENT: '~~' .*? '~~' -> skip;
 AND: '&&';
 OR: '||';
 NOT: '!';
-ARR: 'arr';
 
 //Parser rules
 program: (statement)* EOF;
@@ -47,7 +52,7 @@ statement: variableDeclaration
          | pointerReference
          | asyncBlock;
 
-variableDeclaration: dataType (ARR)? IDENTIFIER ASSIGN expression;
+variableDeclaration: (CONST)? dataType (ARR | DICT)? IDENTIFIER ASSIGN expression;
 
 dataType: 'str' | 'i32' | 'i64' | 'f32' | 'f64' | 'bool' | 'sstream';
 
@@ -88,7 +93,7 @@ loop: whileLoop |doWhileLoop | forLoop;
 
 whileLoop: 'while' LPAREN expression RPAREN COLON statement+ 'endwhile';
 
-doWhileLoop: 'do' COLON statement+ 'while' LPAREN expression RPAREN;
+doWhileLoop: 'do' COLON statement+ 'enddo' 'while' LPAREN expression RPAREN;
 
 forLoop: 'for' LPAREN variableDeclaration expression SEMICOLON expression RPAREN COLON statement+ 'endfor';
 
