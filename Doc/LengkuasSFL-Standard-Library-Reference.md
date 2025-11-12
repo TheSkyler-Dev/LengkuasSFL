@@ -51,6 +51,7 @@ This keeps Lengkuas deterministic and efficient while improving readability.
 | `integrate(<sstream>)`                | Integrates sensor values over time.                                                                      |
 | `threshold(<sstream>, <value>)`       | Returns `true` if current reading exceeds a threshold.                                                   |
 | `debounce(<sstream>, <time_ms>)`      | Software debounce for digital sensors.                                                                   |
+| `iir(<config dict>)`                  | Applies an Infinite Impulse Response |
 
 # I/O and Communication
 | Function Signature      | Description                                                                                            |
