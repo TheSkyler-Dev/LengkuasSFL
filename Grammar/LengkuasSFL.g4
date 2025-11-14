@@ -43,6 +43,7 @@ TRY: 'try';
 CATCH: 'catch';
 ENDTRY: 'endtry';
 THROW: 'throw';
+RET: 'ret';
 
 //units
 CELSIUS: 'celsius';
@@ -53,7 +54,7 @@ KELVIN: 'kelvin';
 IDENTIFIER: [a-zA-Z_][a-zA-Z0-9_]*;
 NUMBER: [0-9]+ ('.' [0-9]+)? | '0x' [0-9a-fA-F]+;
 STRING: '"' .*? '"';
-BOOLEAN: 'true' | 'false';
+BOOL_LITERAL: 'true' | 'false';
 NIL: 'nil';
 SEMICOLON: ';';
 COLON: ':';
@@ -96,33 +97,40 @@ statement: variableDeclaration
          | controlFlow
          | loop
          | ioOperation
-         | arithmeticOperation
          | templateLiteral
          | errorHandling
          | pointerReference
          | asyncBlock
-         | incrementDecrement;
+         | incrementDecrement
+         | returnStatement;
 
 variableDeclaration: (CONST)? dataType (ARR | DICT)? IDENTIFIER ASSIGN expression;
 
 dataType: STR | I32 | I64 | F32 | F64 | BOOL | SSTREAM;
 
-expression: primaryExpression (arithmeticOperator primaryExpression)*
-          | expression OR expression
-          | expression AND expression
-          | NOT expression;
+expression: orExpr;
+
+orExpr: andExpr (OR andExpr)*;
+
+andExpr: equalityExpr (AND equalityExpr)*;
+
+equalityExpr: relationalExpr ((EQ | NEQ) relationalExpr)*;
+
+relationalExpr: additiveExpr ((LT | LTE | GT | GTE) additiveExpr)*;
+
+additiveExpr: multiplicativeExpr ((PLUS | MINUS) multiplicativeExpr)*;
+
+multiplicativeExpr: unaryExpr ((MULT | DIV | MOD) unaryExpr)*;
+
+unaryExpr: (PLUS | MINUS | NOT)* primaryExpression;
 
 primaryExpression: NUMBER
                  | STRING
-                 | BOOLEAN
+                 | BOOL_LITERAL
                  | NIL
                  | IDENTIFIER
                  | templateLiteral
                  | LPAREN expression RPAREN;
-
-arithmeticOperator: PLUS | MINUS | MULT | DIV | MOD;
-
-arithmeticOperation: expression (arithmeticOperator expression)*;
 
 templateLiteral: STRING ('$' IDENTIFIER | '${' expression '}$')*;
 
@@ -130,6 +138,7 @@ functionDeclaration: FUN IDENTIFIER LPAREN (parameter (COMMA parameter)*)? RPARE
 
 parameter: dataType IDENTIFIER;
 
+returnStatement: RET expression?;
 controlFlow: ifStatement | switchStatement;
 
 ifStatement: IF LPAREN expression RPAREN COLON statement+ (ELIF LPAREN expression RPAREN COLON statement+)* ELSE COLON statement+ ENDIF;
@@ -148,6 +157,8 @@ doWhileLoop: DO COLON statement+ ENDDO WHILE LPAREN expression RPAREN;
 
 forLoop: FOR LPAREN variableDeclaration SEMICOLON expression SEMICOLON expression RPAREN COLON statement+ ENDFOR;
 
+ioOperation: functionCall;
+
 functionCall: IDENTIFIER LPAREN (expression (COMMA expression)*)? RPAREN;
 
 pointerReference: PTR IDENTIFIER;
@@ -156,7 +167,7 @@ asyncBlock: ASYNC LPAREN (parameter (COMMA parameter)*)? RPAREN COLON statement+
 
 errorHandling: TRY COLON statement+ CATCH COLON throwStatement ENDTRY;
 
-throwStatement: THROW LPAREN 'errMsg' LPAREN STRING COMMA 'prefix' ARROW 'ecode' LPAREN RPAREN RPAREN RPAREN;
+throwStatement: THROW LPAREN expression RPAREN;
 
 //rules for advanced syntax
 incrementDecrement: IDENTIFIER (INCREMENT | DECREMENT);
