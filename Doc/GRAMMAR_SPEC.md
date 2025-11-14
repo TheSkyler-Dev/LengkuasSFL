@@ -14,7 +14,7 @@ The `LengkuasSFL` (`Lengkuas Sensor Filter Language`) language is a domain-speci
 ## Tokens
 
 1. **Keywords**:
-   - `fun`, `endfun`, `if`, `elif`, `else`, `endif`, `sw`, `case`, `endsw`, `while`, `endwhile`, `do`, `for`, `endfor`, `try`, `catch`, `endtry`, `throw`, `desync`, `resync`, `expect`, `true`, `false`, `nil`, `const`, `arr`, `sstream`
+   - `fun`, `endfun`, `if`, `elif`, `else`, `endif`, `sw`, `case`, `default`, `endsw`, `while`, `endwhile`, `do`, `enddo`, `for`, `endfor`, `try`, `catch`, `endtry`, `throw`, `ret`, `desync`, `resync`, `expect`, `true`, `false`, `nil`, `const`, `arr`, `dict`, `sstream`
 
 2. **Operators**:
    - Arithmetic: `+`, `-`, `*`, `/`, `%`
@@ -57,7 +57,9 @@ program: (statement)* EOF;
 
 ## Statements
 
-Statements include variable and constant declarations, function definitions, control flow, loops, input/output, arithmetic, error handling, pointer references, and async blocks.
+Statements include variable and constant declarations, function definitions, control flow,
+loops, input/output, template literals, error handling, pointer references, async blocks,
+increment/decrement operations, and return statements.
 
 ```
 statement:
@@ -66,19 +68,20 @@ statement:
   | controlFlow
   | loop
   | ioOperation
-  | arithmeticOperation
   | templateLiteral
   | errorHandling
   | pointerReference
-  | asyncBlock;
+  | asyncBlock
+  | incrementDecrement
+  | returnStatement;
 ```
 
 ### Variable and Constant Declaration
 
-Variables use primitive or special types, optionally as arrays. Constants use the `const` keyword.
+Variables use primitive or special types, optionally as arrays or dictionaries. Constants use the `const` keyword.
 
 ```
-variableDeclaration: dataType (ARR)? IDENTIFIER ASSIGN expression;
+variableDeclaration: (CONST)? dataType (ARR | DICT)? IDENTIFIER ASSIGN expression;
 dataType: 'str' | 'i32' | 'i64' | 'f32' | 'f64' | 'bool' | 'sstream';
 ```
 
@@ -94,23 +97,46 @@ All variables are nullable and must be initialized; use `nil` for null values.
 
 ### Expressions
 
-Expressions support arithmetic and logical operators, and template literals.
+Expressions now use a standard precedence hierarchy:
+
+- logical OR `||`
+- logical AND `&&`
+- equality `==`, `!=`
+- relational `<`, `<=`, `>`, `>=`
+- additive `+`, `-`
+- multiplicative `*`, `/`, `%`
+- unary `+`, `-`, `!`
+- primary expressions and template literals
 
 ```
-expression:
-    primaryExpression (arithmeticOperator primaryExpression)*
-  | expression OR expression
-  | expression AND expression
-  | NOT expression;
+expression: orExpr;
+
+orExpr: andExpr (OR andExpr)*;
+
+andExpr: equalityExpr (AND equalityExpr)*;
+
+equalityExpr: relationalExpr ((EQ | NEQ) relationalExpr)*;
+
+relationalExpr: additiveExpr ((LT | LTE | GT | GTE) additiveExpr)*;
+
+additiveExpr: multiplicativeExpr ((PLUS | MINUS) multiplicativeExpr)*;
+
+multiplicativeExpr: unaryExpr ((MULT | DIV | MOD) unaryExpr)*;
+
+unaryExpr: (PLUS | MINUS | NOT)* primaryExpression;
 
 primaryExpression:
     NUMBER
   | STRING
-  | BOOLEAN
+  | BOOL_LITERAL
   | NIL
   | IDENTIFIER
   | templateLiteral
   | LPAREN expression RPAREN;
+```
+Template literals are expressions and can appear wherever an expression is allowed:
+```
+templateLiteral: STRING ('$' IDENTIFIER | '${' expression '}$')*;
 ```
 
 ### Arrays
@@ -126,9 +152,7 @@ MyArr.pop([<index>])
 ### Input/Output Operations
 
 ```
-ioOperation:
-    'msgOut' LPAREN expression RPAREN
-  | 'msgIn' LPAREN expression RPAREN;
+ioOperation: functionCall;
 ```
 
 Examples:
@@ -173,11 +197,11 @@ switchStatement:
     ```
 - Do/While:
     ```
-    doWhileLoop: 'do' COLON statement+ 'while' LPAREN expression RPAREN;
+    doWhileLoop: 'do' COLON statement+ 'enddo' 'while' LPAREN expression RPAREN;
     ```
 - For:
     ```
-    forLoop: 'for' LPAREN variableDeclaration expression SEMICOLON expression RPAREN COLON statement+ 'endfor';
+    forLoop: 'for' LPAREN variableDeclaration SEMICOLON expression SEMICOLON expression RPAREN COLON statement+ 'endfor';
     ```
 
 ### Functions
@@ -225,7 +249,7 @@ errorHandling:
     'try' COLON statement+ 'catch' COLON throwStatement 'endtry';
 
 throwStatement:
-    'throw' LPAREN 'errMsg' LPAREN STRING COMMA 'prefix' ARROW 'ecode' LPAREN RPAREN RPAREN RPAREN;
+    'throw' LPAREN expression RPAREN;
 ```
 
 ### Pointer References
@@ -236,7 +260,21 @@ Pointer references use the `^` caret.
 pointerReference: '^' IDENTIFIER;
 ```
 
----
+### Increment / Decrement
+
+Identifiers can be incremented or decremented using postfix operators:
+
+```
+incrementDecrement: IDENTIFIER (INCREMENT | DECREMENT);
+```
+
+### Return Statements
+
+Functions can return from any point using `ret`, optionally with an expression:
+
+```
+returnStatement: 'ret' expression?;
+```
 
 # Example Program
 
