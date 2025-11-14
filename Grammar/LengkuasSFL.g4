@@ -1,16 +1,60 @@
 grammar LengkuasSFL;
 
 //Lexer rules
+//data types
+STR: 'str';
+I32: 'i32';
+I64: 'i64';
+F32: 'f32';
+F64: 'f64';
+BOOL: 'bool';
+SSTREAM: 'sstream';
 CONST: 'const';
+
+//control flow
+IF: 'if';
+ELIF: 'elif';
+ELSE: 'else';
+ENDIF: 'endif';
+SWITCH: 'sw';
+CASE: 'case';
+DEFAULT: 'default';
+ENDSW: 'endsw';
+
+//loops
+WHILE: 'while';
+ENDWHILE: 'endwhile';
+DO: 'do';
+ENDDO: 'enddo';
+FOR: 'for';
+ENDFOR: 'endfor';
+
+//data structures
 ARR: 'arr';
 DICT: 'dict';
+
+//functions, async, error handling
+FUN: 'fun';
+ENDFUN: 'endfun';
+ASYNC: 'desync';
+RESYNC: 'resync';
+AWAIT: 'expect';
+TRY: 'try';
+CATCH: 'catch';
+ENDTRY: 'endtry';
+THROW: 'throw';
+RET: 'ret';
+
+//units
 CELSIUS: 'celsius';
 FAHRENHEIT: 'fahrenheit';
 KELVIN: 'kelvin';
+
+//other syntax
 IDENTIFIER: [a-zA-Z_][a-zA-Z0-9_]*;
-NUMBER: [0-9]+ ('.' [0-9+])? | '0x' [0-9a-fA-F];
+NUMBER: [0-9]+ ('.' [0-9]+)? | '0x' [0-9a-fA-F]+;
 STRING: '"' .*? '"';
-BOOLEAN: 'true' | 'false';
+BOOL_LITERAL: 'true' | 'false';
 NIL: 'nil';
 SEMICOLON: ';';
 COLON: ':';
@@ -37,6 +81,13 @@ MULTILINE_COMMENT: '~~' .*? '~~' -> skip;
 AND: '&&';
 OR: '||';
 NOT: '!';
+EQ: '==';
+NEQ: '!=';
+LT: '<';
+GT: '>';
+LTE: '<=';
+GTE: '>=';
+PTR: '^';
 
 //Parser rules
 program: (statement)* EOF;
@@ -46,67 +97,77 @@ statement: variableDeclaration
          | controlFlow
          | loop
          | ioOperation
-         | arithmeticOperation
          | templateLiteral
          | errorHandling
          | pointerReference
-         | asyncBlock;
+         | asyncBlock
+         | incrementDecrement
+         | returnStatement;
 
 variableDeclaration: (CONST)? dataType (ARR | DICT)? IDENTIFIER ASSIGN expression;
 
-dataType: 'str' | 'i32' | 'i64' | 'f32' | 'f64' | 'bool' | 'sstream';
+dataType: STR | I32 | I64 | F32 | F64 | BOOL | SSTREAM;
 
-expression: primaryExpression (arithmeticOperator primaryExpression)*
-          | expression OR expression
-          | expression AND expression
-          | NOT expression;
+expression: orExpr;
+
+orExpr: andExpr (OR andExpr)*;
+
+andExpr: equalityExpr (AND equalityExpr)*;
+
+equalityExpr: relationalExpr ((EQ | NEQ) relationalExpr)*;
+
+relationalExpr: additiveExpr ((LT | LTE | GT | GTE) additiveExpr)*;
+
+additiveExpr: multiplicativeExpr ((PLUS | MINUS) multiplicativeExpr)*;
+
+multiplicativeExpr: unaryExpr ((MULT | DIV | MOD) unaryExpr)*;
+
+unaryExpr: (PLUS | MINUS | NOT)* primaryExpression;
 
 primaryExpression: NUMBER
                  | STRING
-                 | BOOLEAN
+                 | BOOL_LITERAL
                  | NIL
                  | IDENTIFIER
                  | templateLiteral
                  | LPAREN expression RPAREN;
 
-arithmeticOperator: PLUS | MINUS | MULT | DIV | MOD;
-
-arithmeticOperation: expression (arithmeticOperator expression)*;
-
 templateLiteral: STRING ('$' IDENTIFIER | '${' expression '}$')*;
 
-functionDeclaration: 'fun' IDENTIFIER LPAREN (parameter (COMMA parameter)*)? RPAREN ARROW dataType COLON statement+ 'endfun';
+functionDeclaration: FUN IDENTIFIER LPAREN (parameter (COMMA parameter)*)? RPAREN ARROW dataType COLON statement+ ENDFUN;
 
 parameter: dataType IDENTIFIER;
 
+returnStatement: RET expression?;
 controlFlow: ifStatement | switchStatement;
 
-ifStatement: 'if' LPAREN expression RPAREN COLON statement+ ('elif' LPAREN expression RPAREN COLON statement+)* 'else' COLON statement+ 'endif';
+ifStatement: IF LPAREN expression RPAREN COLON statement+ (ELIF LPAREN expression RPAREN COLON statement+)* ELSE COLON statement+ ENDIF;
 
-switchStatement: 'sw' LPAREN expression RPAREN COLON (caseBlock)+ (defaultBlock)? 'endsw';
+switchStatement: SWITCH LPAREN expression RPAREN COLON (caseBlock)+ (defaultBlock)? ENDSW;
 
-caseBlock: 'case' expression COLON LBRACE statement+ RBRACE;
+caseBlock: CASE expression COLON LBRACE statement+ RBRACE;
 
-defaultBlock: 'default' COLON LBRACE statement+ RBRACE;
+defaultBlock: DEFAULT COLON LBRACE statement+ RBRACE;
 
 loop: whileLoop |doWhileLoop | forLoop;
 
-whileLoop: 'while' LPAREN expression RPAREN COLON statement+ 'endwhile';
+whileLoop: WHILE LPAREN expression RPAREN COLON statement+ ENDWHILE;
 
-doWhileLoop: 'do' COLON statement+ 'enddo' 'while' LPAREN expression RPAREN;
+doWhileLoop: DO COLON statement+ ENDDO WHILE LPAREN expression RPAREN;
 
-forLoop: 'for' LPAREN variableDeclaration expression SEMICOLON expression RPAREN COLON statement+ 'endfor';
+forLoop: FOR LPAREN variableDeclaration SEMICOLON expression SEMICOLON expression RPAREN COLON statement+ ENDFOR;
 
-ioOperation: 'msgOut' LPAREN expression RPAREN
-           | 'msgIn' LPAREN expression RPAREN;
+ioOperation: functionCall;
 
-pointerReference: '^' IDENTIFIER;
+functionCall: IDENTIFIER LPAREN (expression (COMMA expression)*)? RPAREN;
 
-asyncBlock: 'desync' LPAREN (parameter (COMMA parameter)*)? RPAREN COLON statement+ 'resync';
+pointerReference: PTR IDENTIFIER;
 
-errorHandling: 'try' COLON statement+ 'catch' COLON throwStatement 'endtry';
+asyncBlock: ASYNC LPAREN (parameter (COMMA parameter)*)? RPAREN COLON statement+ RESYNC;
 
-throwStatement: 'throw' LPAREN 'errMsg' LPAREN STRING COMMA 'prefix' ARROW 'ecode' LPAREN RPAREN RPAREN RPAREN;
+errorHandling: TRY COLON statement+ CATCH COLON throwStatement ENDTRY;
+
+throwStatement: THROW LPAREN expression RPAREN;
 
 //rules for advanced syntax
 incrementDecrement: IDENTIFIER (INCREMENT | DECREMENT);
